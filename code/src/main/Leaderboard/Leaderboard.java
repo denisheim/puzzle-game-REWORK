@@ -5,11 +5,23 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+/**
+ * the leaderboard class manages the leaderboard for the puzzle game.
+ * it allows adding entries, retrieving the leaderboard as a string,
+ * clearing the leaderboard, and saving/loading the leaderboard to/from a file
+ */
 public class Leaderboard {
+
+    /**
+     * the entry class represents a single leaderboard entry with a username and time
+     */
     private static class Entry {
         String username;
         long time;
 
+        /**
+         * constructor for the Entry class
+         */
         Entry(String username, long time) {
             this.username = username;
             this.time = time;
@@ -19,17 +31,27 @@ public class Leaderboard {
     private ArrayList<Entry> entries;
     private static final String LEADERBOARD_FILE = "LBData/leaderboard.txt";
 
+    /**
+     * constructor for the Leaderboard class
+     */
     public Leaderboard() {
         entries = new ArrayList<>();
         loadLeaderboard();
     }
 
+    /**
+     * adds a new entry to the leaderboard, sorts the entries by time,
+     * and saves the leaderboard to the file
+     */
     public void addEntry(String username, long time) {
         entries.add(new Entry(username, time));
         Collections.sort(entries, Comparator.comparingLong(e -> e.time));
         saveLeaderboard();
     }
 
+    /**
+     * retrieves the leaderboard as a formatted string.
+     */
     public String getLeaderboard() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < entries.size(); i++) {
@@ -39,11 +61,18 @@ public class Leaderboard {
         return sb.toString();
     }
 
+    /**
+     * clears the leaderboard and saves the empty leaderboard to the file
+     */
     public void clearLeaderboard() {
         entries.clear();
         saveLeaderboard();
     }
 
+    /**
+     * saves the leaderboard to a file
+     * creates the directory if it does not exist
+     */
     private void saveLeaderboard() {
         File directory = new File("LBData");
         if (!directory.exists()) {
@@ -60,6 +89,10 @@ public class Leaderboard {
         }
     }
 
+    /**
+     * loads the leaderboard from a file
+     * if the file does not exist, it does nothing
+     */
     private void loadLeaderboard() {
         File file = new File(LEADERBOARD_FILE);
         if (!file.exists()) {

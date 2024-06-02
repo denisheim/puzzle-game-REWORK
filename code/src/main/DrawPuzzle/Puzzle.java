@@ -9,6 +9,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/**
+ * the puzzle class manages the logic for the puzzle game,
+ * including initializing the puzzle pieces, handling movements,
+ * and checking for a win condition
+ */
 public class Puzzle {
     private Images[] imgs;
     public BufferedImage[][] pieces;
@@ -27,6 +32,10 @@ public class Puzzle {
     public int Ym = 0;
     public int Xm = 0;
 
+    /**
+     * constructor for the puzzle class
+     * initializes the puzzle with the specified difficulty
+     */
     public Puzzle(int difficulty) {
         Images.existDirec();
         this.numImages = Images.getNumImages();
@@ -44,14 +53,23 @@ public class Puzzle {
         this.height = this.pieces[this.level][0].getHeight();
     }
 
+    /**
+     * gets the current difficulty of the puzzle
+     */
     public int getDifficulty() {
         return this.difficulty;
     }
 
+    /**
+     * gets the current minor difficulty of the puzzle
+     */
     public int getDifficultyMenor() {
         return this.difficultyMenor;
     }
 
+    /**
+     * sets the difficulty of the puzzle and reinitializes the puzzle pieces
+     */
     public void setDifficulty(int difficulty) {
         this.difficulty = difficulty * difficulty;
         this.difficultyMenor = difficulty;
@@ -66,23 +84,34 @@ public class Puzzle {
         this.height = this.pieces[this.level][0].getHeight();
     }
 
+    /**
+     * sets the current level (image) of the puzzle.
+     */
     public void setLevel(int level) {
         this.level = level;
     }
 
+    /**
+     * resets the image by randomizing the order of the pieces
+     */
     public void resetImage() {
         this.noPiece = (int)(Math.random() * (double)this.difficulty);
         this.orderPieces.clear();
         this.setOrderPiece();
     }
 
+    /**
+     * solves the puzzle by arranging the pieces in the correct order
+     */
     public void solve() {
         for(int i = 0; i < this.orderPieces.size(); ++i) {
             this.orderPieces.set(i, i);
         }
-
     }
 
+    /**
+     * sets the order of the pieces randomly
+     */
     private void setOrderPiece() {
         while(this.orderPieces.size() < this.difficulty) {
             int posTemp = (int)(Math.random() * (double)this.difficulty);
@@ -90,9 +119,11 @@ public class Puzzle {
                 this.orderPieces.add(posTemp);
             }
         }
-
     }
 
+    /**
+     * checks if a number exists in the orderPieces list
+     */
     private boolean existNum(int num) {
         Iterator<Integer> var2 = this.orderPieces.iterator();
 
@@ -108,6 +139,9 @@ public class Puzzle {
         return true;
     }
 
+    /**
+     * draws the puzzle pieces on the given Graphics object
+     */
     public void drawPieces(Graphics g) {
         int space = 5;
         int x = 20;
@@ -201,6 +235,9 @@ public class Puzzle {
 
     }
 
+    /**
+     * checks if the puzzle is in a win state
+     */
     public boolean isWin() {
         boolean win = true;
 
@@ -214,6 +251,9 @@ public class Puzzle {
         return win;
     }
 
+    /**
+     * initializes the images used in the puzzle
+     */
     private void setImages() {
         for(int i = 0; i < this.numImages; ++i) {
             try {
@@ -228,6 +268,5 @@ public class Puzzle {
                 System.err.println(ex.getMessage());
             }
         }
-
     }
 }
